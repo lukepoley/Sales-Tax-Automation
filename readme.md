@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project is a high-performance Python-based automation tool designed to streamline the extraction, filtering, and reporting of Joint Interest Billing (JIB) data for tax compliance. It automates the identification of high-value transactions () and maps them to digital invoice repositories, significantly reducing the manual effort required for quarterly sales tax audits.
+This project is a high-performance Python-based automation tool designed to streamline the extraction, filtering, and reporting of Joint Interest Billing (JIB) data for tax compliance. It automates the identification of high-value transactions and maps them to digital invoice repositories, significantly reducing the manual effort required for quarterly sales tax audits.
 
 ### Key Features
 
