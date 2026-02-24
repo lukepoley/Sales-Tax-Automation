@@ -3,14 +3,14 @@ name: Build and Release Windows EXE
 on:
   push:
     tags:
-      - 'v*' # Trigger on any tag starting with 'v' (e.g., v1.0)
-  workflow_dispatch: # Still allows manual runs
+      - 'v*'
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: write # Needed to create a release and upload assets
+      contents: write
 
     steps:
     - name: Checkout code
@@ -19,7 +19,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.14'
+        python-version: '3.11' # Changed from 3.14 to a stable version
 
     - name: Install dependencies
       run: |
@@ -28,15 +28,18 @@ jobs:
         if (Test-Path requirements.txt) { pip install -r requirements.txt }
 
     - name: Build EXE with PyInstaller
+      # We wrap the filename in quotes because of the spaces
       run: pyinstaller --onefile --windowed --name "SalesTaxGenerator" "NNOG Sales Tax Refund v0.9.py"
-      # Note: Changed name to "SalesTaxGenerator.exe" for the final file
+
+    - name: Verify Build
+      run: ls dist/  # This will show up in your logs so you can see if the EXE exists
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
         files: dist/SalesTaxGenerator.exe
         name: Release ${{ github.ref_name }}
-        tag_name: ${{ github.ref }}
+        tag_name: ${{ github.ref_name }} # Use ref_name for a cleaner tag
         draft: false
         prerelease: false
       env:
