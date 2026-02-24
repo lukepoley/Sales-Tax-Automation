@@ -24,18 +24,16 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        # We install these explicitly to ensure PyInstaller sees them
-        pip install pandas openpyxl xlsxwriter pyinstaller
+        pip install pandas numpy tzdata openpyxl xlsxwriter pyinstaller
         if (Test-Path requirements.txt) { pip install -r requirements.txt }
 
     - name: Build EXE with PyInstaller
-      # We use the pipe (|) for multi-line commands in YAML
-      # --console ensures we can see error messages on the Windows machine
       run: |
         pyinstaller --onefile --console --clean `
-        --collect-all pandas `
-        --hidden-import openpyxl `
-        --hidden-import xlsxwriter `
+        --hidden-import pandas `
+        --hidden-import tzdata `
+        --hidden-import pytz `
+        --collect-submodules pandas `
         --name "SalesTaxGenerator" "NNOG Sales Tax Refund v0.9.py"
 
     - name: Verify Build
