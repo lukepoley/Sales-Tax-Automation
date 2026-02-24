@@ -1,4 +1,4 @@
-name: Build and Release Windows EXE
+name: name: Build and Release Windows EXE
 
 on:
   push:
@@ -19,27 +19,33 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11' # Changed from 3.14 to a stable version
+        python-version: '3.11'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        # Install the core stack + engine requirements
         pip install pandas openpyxl xlsxwriter pyinstaller
         if (Test-Path requirements.txt) { pip install -r requirements.txt }
 
     - name: Build EXE with PyInstaller
-      # We wrap the filename in quotes because of the spaces
-      run: pyinstaller --onefile --windowed --name "SalesTaxGenerator" "NNOG Sales Tax Refund v0.9.py"
+      # Added collection flags for pandas and hidden imports for Excel engines
+      run: |
+        pyinstaller --onefile `
+        --collect-all pandas `
+        --hidden-import openpyxl `
+        --hidden-import xlsxwriter `
+        --name "SalesTaxGenerator" "NNOG Sales Tax Refund v0.9.py"
 
     - name: Verify Build
-      run: ls dist/  # This will show up in your logs so you can see if the EXE exists
+      run: ls dist/
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
         files: dist/SalesTaxGenerator.exe
         name: Release ${{ github.ref_name }}
-        tag_name: ${{ github.ref_name }} # Use ref_name for a cleaner tag
+        tag_name: ${{ github.ref_name }}
         draft: false
         prerelease: false
       env:
