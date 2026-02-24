@@ -1,13 +1,16 @@
-name: Build Windows EXE
+name: Build and Release Windows EXE
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch: # Allows manual triggering
+    tags:
+      - 'v*' # Trigger on any tag starting with 'v' (e.g., v1.0)
+  workflow_dispatch: # Still allows manual runs
 
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: write # Needed to create a release and upload assets
 
     steps:
     - name: Checkout code
@@ -21,16 +24,20 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pyinstaller
+        pip install pandas openpyxl xlsxwriter pyinstaller
         if (Test-Path requirements.txt) { pip install -r requirements.txt }
 
     - name: Build EXE with PyInstaller
-      run: pyinstaller --onefile --windowed "NNOG Sales Tax Refund v0.9.py"
-      # --onefile: Bundles everything into one .exe
-      # --windowed: Prevents a console window from popping up (optional)
+      run: pyinstaller --onefile --windowed --name "SalesTaxGenerator" "NNOG Sales Tax Refund v0.9.py"
+      # Note: Changed name to "SalesTaxGenerator.exe" for the final file
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
       with:
-        name: windows-exe
-        path: dist/*.exe
+        files: dist/SalesTaxGenerator.exe
+        name: Release ${{ github.ref_name }}
+        tag_name: ${{ github.ref }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
