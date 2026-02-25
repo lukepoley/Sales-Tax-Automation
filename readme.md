@@ -25,22 +25,8 @@ This project is a high-performance Python-based automation tool designed to stre
 
 ## How to Use
 
-1. **Install Dependencies:**
-```bash
-pip install pandas xlsxwriter openpyxl
-
-```
-
-
-2. **Run the Script:**
-```bash
-python sales_tax_processor.py
-
-```
-
-
-3. **Input Requirements:**
-* Provide the month range (e.g., `1-3` for Q1).
-* Path to the Master JIB Excel file.
+1. **Install EXE:**
+- Go To The Releases Tab
+- Download and Run .exe
 * Path to the Invoice Reference/Cross-walk file.
 * Target folder for the generated reports.
