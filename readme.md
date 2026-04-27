@@ -11,16 +11,7 @@ This project is a high-performance Python-based automation tool designed to stre
 * **Dynamic Hyperlinking:** Automatically generates platform-aware hyperlinks (Dropbox and Local F: Drive) for instantaneous access to digital invoice images based on vendor and invoice metadata.
 * **Intelligent Data Loading:** Features a "smart load" algorithm that scans raw Excel files to find header rows, allowing for inconsistent source file formatting.
 * **Cross-Platform Compatibility:** Designed to function seamlessly across Windows and Linux environments.
-
----
-
-## Technical Stack
-
-* **Language:** Python 3, Rust
-* **Data Manipulation:** Pandas, Polars
-* **Database Engine:** SQLite (SQLAlchemy/sqlite3) for Python
-* **Excel Engine:** XlsxWriter 
-
+  
 ---
 
 ## How to Use
